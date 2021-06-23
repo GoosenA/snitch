@@ -1,0 +1,6 @@
+requests
+google-cloud-secret-manager
+google-auth-httplib2
+google-oauth
+google-api-python-client
+google-cloud-firestore
