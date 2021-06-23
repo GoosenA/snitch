@@ -1,11 +1,12 @@
-# Follow these steps to deploy your own version
-1. [Create Google Cloud Project](#create-google-cloud-project)
+# Follow these steps to deploy your own Snitch
+1. [Create a Google Cloud Project](#create-a-google-cloud-project)
 2. [Create a Firestore database](#create-a-firestore-database) 
 3. [Create Cloud Functions](#create-cloud-functions)
-5. [Upload code to Investec Programmable Banking card](#upload-code-to-investec-programmable-banking-card)
+4. [Upload code to Investec Programmable Banking card](#upload-code-to-investec-programmable-banking-card)
+5. [Add Apps Scripts to Google spreadsheet](#add-apps-scripts-to-google-spreadsheet)
 
 
-## Create Google Cloud Project
+## Create a Google Cloud Project
 Follow  [these steps](https://cloud.google.com/resource-manager/docs/creating-managing-projects#gcloud) to create a GCP project. You need to configure your local terminal to deploy cloud functions in later steps. To do so, you need to set the project-id:
 1. Check your project:
   ```
@@ -158,6 +159,9 @@ Add the following code to your to the main.js file. Note, you can still use your
 ```
 
 
+## Add Apps Scripts to Google spreadsheet
+
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) TODO: add apps script/appsheet description
 
 
 [:arrow_left: Go back to Setup list](../README.md#setup)

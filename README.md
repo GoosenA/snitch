@@ -1,7 +1,17 @@
 # [Snitch]((https://hackathon-202106.ue.r.appspot.com/)) :speech_balloon:
 
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) TODO: add project description
+> "It’s a Remembrall! Gran knows I forget things — this tells you if there’s something you’ve forgotten to do. Look, you hold it tight like this and if it turns red — oh ... you’ve forgotten something ..."
+— Neville explaining his Remembrall
 
+
+Ever wish you had access to [Neville Longbottom's Remembral](https://harrypotter.fandom.com/wiki/Remembrall) when you got a new credit card and had to update all your subscription information on Netflix, Uber, Takealot, etc. Although Snitch is not a magical little ball, it will help you remember when the time comes to update your credit card information.
+
+Snitch works by remembering where you used your credit card, and then deciding if that merchant is a subscription or not. You can tell Snitch when your credit card expires, and Snitch will remind you about all the pesky little updates you need to do before your card has expired. 
+
+
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) TODO: add demo video
+
+[![Demo video](hdocs/demo.png)]("Hackathon demo video")
 
 
 ## Getting started
@@ -10,13 +20,12 @@ Create a user [here](https://hackathon-202106.ue.r.appspot.com/) and follow the 
 
 # Index
 1. [Overview](#overview)
-    1. [Features]()
+    1. [Features](#features)
     2. [Benefits of using this project](#benefits-of-using-this-project)
-    3. [Getting started](#getting-started)
 2. [Technical Details](#technical-details) 
     1. [Technology used](#technology-used)
     2. [Design](#design)
-3. [Setup your own version](#setup-your-own-version)
+3. [Setup your own Snitch](#setup-your-own-snitch)
 4. [Future improvements](#future-improvements)
 
 
@@ -53,7 +62,7 @@ The `process_merchant` cloud function is triggered by the message published to t
 The `process_card` cloud function is triggered by the message published to the `card` topip. The cloud function determines if the card information is stored in the **Credit card** sheet. If the credit card information is not in the sheet, it is added.
 
 
-# Setup your own version
+# Setup your own Snitch
 Don't want to sign up for one more user account? Would you rather do things the hard way and deploy your own version? No problem. Follow [these steps](docs/SETUP.md) to set up your own version of the project on Google Cloud.
 
 
