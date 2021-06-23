@@ -1,0 +1,2 @@
+google-cloud-pubsub
+google-cloud-firestore==1.9.0
