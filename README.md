@@ -1,4 +1,4 @@
-# [Snitch]((https://hackathon-202106.ue.r.appspot.com/)) :speech_balloon:
+# [Snitch](https://hackathon-202106.ue.r.appspot.com/):speech_balloon:
 
 > "It’s a Remembrall! Gran knows I forget things — this tells you if there’s something you’ve forgotten to do. Look, you hold it tight like this and if it turns red — oh ... you’ve forgotten something ..."
 — Neville explaining his Remembrall
@@ -28,17 +28,15 @@ Create a user [here](https://hackathon-202106.ue.r.appspot.com/) and follow the 
 
 
 # Overview
-The project analyses credit card transactions and creates a list of merchants were the credit card information is potentialy stored, such as online stores or for subscription services. This list can then be used to update the credit card information with various merchants when the credit card expires. The list of merchants can also be used to gain other insights.
+The project analyses credit card transactions and creates a list of merchants were the credit card information is potentially stored, such as online stores or for subscription services. This list can then be used to update the credit card information with various merchants when the credit card expires. The list of merchants can also be used to gain other insights.
 
 The project also sets up automatic notifications linked to your Google Calendar. When the expiry date of a card grows near, you will receive Google Calendar notifications reminding you to update your card info and where to update your card info.
 
-The most important feature of the project: you remain in control of your data. We **do not** store any transaction information. All your transaction is stored in your own personal Google Sheet. If at any time you wish to stop using the service, you can remove the GCP service account frm the sheet and the system will not have access to you information any more.
+The most important feature of the project: you remain in control of your data. We **do not** store any transaction information. All your transaction is stored in your own personal Google Sheet. If at any time you wish to stop using the service, you can remove the GCP service account from the sheet and the system will not have access to you information any more.
 
-This allows you to avoid paying penalties for transactions charged to your expired credit cards. You will also avoid late fees by updating your credit card information as soon as you have received your new credit card.
+The project allows you to avoid paying penalties for transactions charged to your expired credit cards. This project can also potentially save you money. The list can be used to analyse what type of services you pay for regularly, allowing you to decide if you need to cancel any service if necessary. 
 
 Cancelling a credit card? The list shows you where your soon to be credit card is used, allowing you to cancel these services and subcriptions, or updating the credit card info with a new one.
-
-This project can also potentially save you money. The list can be used to analyse what type of services you pay for regulary, allowing you to decide if you need to cancel any service if necesary. 
 
 
 # Technical details

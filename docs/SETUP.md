@@ -161,7 +161,162 @@ Add the following code to your to the main.js file. Note, you can still use your
 
 ## Add Apps Scripts to Google spreadsheet
 
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) TODO: add apps script/appsheet description
+With Apps Script you can configure reminders to notify you which subscriptions should be renewed when a credit card expires.
+
+### Create a new script
+From your Google Sheet, go to `Tools -> Script editor`. This will open a new tab with Apps Script. You can rename the script if you wish.
+
+### Copy code to Apps Script
+Copy the code below the the Apps Script editor and click on the `save` icon.
+
+![Apps script editor](appsscript_editor.png)
+
+Code to copy:
+ ```
+ // get spreadsheet
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    function doGet(e){
+      remindMeAboutSubscriptions();
+      return HtmlService.createHtmlOutput('').setSandboxMode(HtmlService.SandboxMode.IFRAME);
+    }
+    function remindMeAboutSubscriptions() {
+      // get card info
+      var expiringCards = getCardsByExpiry(spreadsheet,30,1);
+      // get subscriptions
+      var subscriptionReminders = getSubscriptionsByExpiringCard(spreadsheet,expiringCards);
+      // notify user
+      //sendReminderEmail(subscriptionReminders);
+      createCalendarReminder(subscriptionReminders);
+    }
+    function getCardsByExpiry(spreadsheet,Reminder1_DaysToExpiry) {
+      //get credit cards sheet
+      var sheet = spreadsheet.getSheetByName('Credit cards');
+      //get values
+      var data = sheet.getDataRange().getValues();
+      var cards = {};
+      for (var i = 1; i < data.length; i++) {
+        if(data[i][3]!=""){
+          continue
+        }
+        var expiryDate = new Date(data[i][2]);
+        var dateNow = new Date();
+        var difference= Math.abs(expiryDate-dateNow);
+        var daysToExpiry = difference/(1000 * 3600 * 24)
+        if(daysToExpiry<=Reminder1_DaysToExpiry)
+        {
+          cards[i-1] = {"id":data[i][0],"cardnumber":data[i][1], "expity":data[i][2],"reminderdate":data[i][3]}
+        }
+        //Logger.log('Card id: ' + data[i][0]);
+        //Logger.log('Card number: ' + data[i][1]);
+        //ogger.log('Expiry: ' + data[i][2]);
+      }
+      return cards
+    }
+    function getSubscriptionsByExpiringCard(spreadsheet,expiringCards) {
+      var subscriptions = {};
+      var cardCount = Object.keys(expiringCards).length;
+      if(cardCount<1)
+      {
+        return subscriptions;
+      }
+      //get Merchants sheet
+      var sheet = spreadsheet.getSheetByName('Subscriptions');
+      //get values
+      var data = sheet.getDataRange().getValues();
+      var subscriptionCount = 0;
+      for (var i = 0; i < cardCount; i++) {
+          cardId = expiringCards[i]["id"]
+          cardNumber = expiringCards[i]["cardnumber"]
+          subscriptions[i] = {}
+          subscriptions[i]["id"] = expiringCards[i]["id"]
+          subscriptions[i]["cardnumber"] = cardNumber
+          subscriptions[i]["expiry"] = expiringCards[i]["expity"]
+          var filteredData = data.filter(function(item){
+              return (item[1] == cardId)&&(item[2] == true);         
+          });
+          subscriptions[i]["subscriptions"] = filteredData
+          subscriptionCount+=1;
+      }
+      return subscriptions
+    }
+    function sendReminderEmail(subscriptionReminders){
+      Object.keys(subscriptionReminders).forEach(function(key){
+        var cardId = subscriptionReminders[key]["id"];
+        var cardNumber = subscriptionReminders[key]["cardnumber"];
+        var cardExpiryDate = subscriptionReminders[key]["expiry"];
+        var subscriptions = subscriptionReminders[key]["subscriptions"];
+        var subscriptionList = ""
+        for (var i = 0; i < subscriptions.length; i++) {
+          subscriptionList+=`<li>${subscriptions[i][3]} (${subscriptions[i][9]})</li>`;
+        }
+        //https://www.tutorialspoint.com/online_html_editor.php
+        var htmlEmailBody = 
+          `<!DOCTYPE html>
+          <html>
+            <head>
+                <title>reminder</title>
+            </head>
+            <body>
+                <h2>${cardNumber} - Expiring ${cardExpiryDate}</h2>
+                <h3>Subscriptions linked to this card:</h3>
+                ${subscriptionList}
+            </body>
+          </html>`;
+        GmailApp.sendEmail(Session.getActiveUser().getEmail(),"Reminder: Update credit card subscriptions",'HTML body here',{htmlBody: htmlEmailBody}) 
+        recordReminderInformation(cardId,new Date())
+      });
+    }
+    function createCalendarReminder(subscriptionReminders){
+      Object.keys(subscriptionReminders).forEach(function(key){
+        var cardId = subscriptionReminders[key]["id"];
+        var cardNumber = subscriptionReminders[key]["cardnumber"];
+        var cardExpiryDate = subscriptionReminders[key]["expiry"];
+        var subscriptions = subscriptionReminders[key]["subscriptions"];
+        var subscriptionList = ""
+        for (var i = 0; i < subscriptions.length; i++) {
+          subscriptionList+=`<li>${subscriptions[i][3]} (${subscriptions[i][9]})</li>`;
+        }
+        //https://www.tutorialspoint.com/online_html_editor.php
+        var htmlEmailBody = `<html><h2>${cardNumber} - Expiring ${cardExpiryDate}</h2><h3>Subscriptions linked to this card:</h3>${subscriptionList}</html>`;
+        var event = {
+          location: 'Online',
+          description: htmlEmailBody,
+          //attendees: [
+            //{email: 'alice@example.com'},
+            //{email: 'bob@example.com'}
+          //],
+          // Red background. Use Calendar.Colors.get() for the full list.
+          colorId: 11
+        };
+        eventReminder = CalendarApp.createAllDayEvent("Renew credit card subscriptions",new Date(cardExpiryDate),event)
+        eventReminder.addEmailReminder(1*60*12*30)
+        recordReminderInformation(cardId,new Date())
+      });
+    }
+    function recordReminderInformation(cardId,timestamp) {
+      //get credit cards sheet
+      var sheet = spreadsheet.getSheetByName('Credit cards');
+      //get values
+      var data = sheet.getDataRange().getValues();
+      for (var i = 1; i < data.length; i++) {
+        if(data[i][0]==cardId)
+        {
+          sheet.getRange(i+1, 4).setValue(timestamp);
+        }
+      }
+      // Make sure the cell is updated right away in case the script is interrupted
+      SpreadsheetApp.flush();
+    }
+ ```
+
+### Create a trigger
+Set up a trigger that will execute the code above on a schedule. 
+![Apps script trigger](appsscript_trigger.png)
+
+Note: When you Save the trigger, it will make a pop-up that asks you to Sign In with your Google account. After you Sign In you will get the warning that "Google hasn’t verified this app". If you trust the app, click on Advanced and then Go to <your_app> (unsafe) and Allow the app.
+
+![Apps script warning](appsscript_warning.png)
+
 
 
 [:arrow_left: Go back to Setup list](../README.md#setup)
