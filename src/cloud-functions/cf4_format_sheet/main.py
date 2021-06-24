@@ -40,6 +40,7 @@ def get_sheet_structures():
             "Country Code",
             "Country Name",
             "Last Transaction Date",
+            "Image",
             "=COUNTA(A:A)",
         ],
         os.environ.get("NOT_SUBCRIPTIONS_RANGE_NAME", "Not subscriptions"): [
@@ -54,6 +55,7 @@ def get_sheet_structures():
             "Country Code",
             "Country Name",
             "Last Transaction Date",
+            "Image",
             "=COUNTA(A:A)",
         ],
     }
