@@ -1,4 +1,4 @@
-# [Snitch]((https://hackathon-202106.ue.r.appspot.com/)) :speech_balloon:
+# [Snitch](https://hackathon-202106.ue.r.appspot.com/) :speech_balloon:
 
 > "It’s a Remembrall! Gran knows I forget things — this tells you if there’s something you’ve forgotten to do. Look, you hold it tight like this and if it turns red — oh ... you’ve forgotten something ..."
 — Neville explaining his Remembrall
