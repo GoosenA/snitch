@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Sheet{% endblock %}
+{% block header %}
+<h1>Google Sheet Instructions</h1>
+{% endblock %}
+
+{% block content %}
+{% if vm["logged_in"] %}
+{% if vm['result'] %}
+<p class="{{vm['result']['format']}}">{{vm['result']['text']}}</p>
+{%endif%}
+<h3>1. Create a Google Sheet</h3>
+<p>All data will be stored in your own Google Sheet. To enable this service to access your sheet, you should give our
+    service account <span class="code-inline">Editor</span> access. Share your Google Sheet with the following service
+    account email as shown in
+    Figure&nbsp;1:<br><br>
+    <input class="code" readonly value="{{vm['service_acc']}}">
+<div class="image">
+    <img src="/static/sheet1.png" alt="sheet_service_account_image" /><br>
+    Figure 1
+</div>
+
+<h3>2. Link your Google Sheet</h3>
+<p>In order for this service to identify your sheet, you must set up your Sheet ID here. The
+    <span class="code-inline">[Sheet_ID]</span> can be found in the URL:
+    <span class="code-inline">https://docs.google.com/spreadsheets/d/[Sheet_ID]/edit#gid=0</span><br>
+    Also shown in Figure&nbsp;1.
+</p>
+{% if vm["sheet_id"] %}
+<form method="POST" id="edit_form" action="/sheet/update">
+    <label>Sheet ID </label>
+    <input class="code" name="sheet_id" id="sheet_id" value="{{vm['sheet_id']}}" required disabled>
+    <div>
+        <button id="sheet_id_edit" onclick="edit_sheet()" type="button">Edit</button>
+        <input type="submit" id="sheet_id_submit" value="Update" style="display: none;">
+        <input type="submit" class="danger" id="sheet_id_remove_btn" value="Remove" style="display: none;"
+            onclick="remove_sheet_id()">
+    </div>
+    <input type="hidden" id="sheet_id_original" value="{{vm['sheet_id']}}">
+</form>
+{%else%}
+<form method="POST" action="/sheet/update">
+    <label>Enter Sheet ID</label>
+    <input class="code" name="sheet_id" id="sheet_id" value="">
+    <input type="submit" value="Save">
+</form>
+{%endif%}
+
+<h3>3. Auto-format Google Sheet</h3>
+<p>The service expects certain sheets within your Google Sheet to exist. The column headers in each sheet is also very
+    specific and should <span class="warning">not be modified</span>. This step will automatically add
+    the necessary sheets to your Google Sheet if they do not exist yet. Figure&nbsp;2 shows the sheets that are created
+    with this button:
+</p>
+<ul>
+    <li>Credit cards</li>
+    <li>Subscriptions</li>
+    <li>Not subscriptions</li>
+</ul>
+{% if vm["sheet_id"] %}
+<form method="POST" action="/sheet/format">
+    <input type="submit" id="sheet_format_submit" value="Format sheet">
+</form>
+{%else%}
+<button type="button" disabled>Format sheet</button>
+{%endif%}
+<div class="image">
+    <img src="/static/sheet2.png" alt="sheet_format_image" /><br>
+    Figure 2
+</div>
+<div>
+    <br>
+    <label>
+        <a href="{{url_for('.home')}}">Home</a>
+        &nbsp;|&nbsp;
+        <a href="{{url_for('.cardcode')}}">Card</a>
+        &nbsp;|&nbsp;
+        <a href="{{url_for('.appscript')}}">AppScript</a>
+    </label>
+</div>
+{% else %}
+<p>Please log in to access this page.</p>
+{% endif %}
+{% endblock %}

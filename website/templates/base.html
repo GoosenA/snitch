@@ -1,0 +1,24 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Snitch</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/basic.js"></script>
+<nav>
+    <h1><a href="{{url_for('.home')}}">Snitch App</a></h1>
+    <ul>
+        {% if vm['logged_in'] %}
+        <li><a href="{{url_for('.sheet')}}">Sheet</a>
+        <li><a href="{{url_for('.cardcode')}}">Card</a>
+        <li><a href="{{url_for('.appscript')}}">AppScript</a>
+        <li><a href="{{url_for('.logout')}}" title="{{ vm['username'] }}">(Log Out)</a>
+            {% else %}
+        <li><a href="{{url_for('.register')}}">Register</a>
+        <li><a href="{{url_for('.login')}}">Log In</a>
+            {% endif %}
+    </ul>
+</nav>
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+</section>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Overview{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+{% if vm['logged_in'] %}
+
+<p>Follow the instructions on each of the following pages:
+
+<ol>
+    <li><a href="{{url_for('.sheet')}}">Sheet</a> setup instructions
+    <li><a href="{{url_for('.cardcode')}}">Card</a> code instructions
+    <li><a href="{{url_for('.appscript')}}">AppScript</a> instructions
+</ol>
+{% else %}
+<p>Please log in to access this page.</p>
+{% endif %}
+{% endblock %}
