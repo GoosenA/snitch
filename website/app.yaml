@@ -1,0 +1,14 @@
+runtime: python38
+
+handlers:
+  - url: /favicon\.ico
+    static_files: favicon.ico
+    upload: favicon\.ico
+
+  - url: /static
+    static_dir: static
+
+env_variables:
+  URL_PROCESS_TRANSACTION: "<Insert Cloud Function Url>"
+  URL_FORMAT_SHEET: "<Insert Cloud Function Url>"
+  SHEET_SERVICE_ACCOUNT: "<sheets_service_account>@<project-id>.iam.gserviceaccount.com"

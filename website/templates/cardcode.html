@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Card Code{% endblock %}
+{% block header %}
+<h1>Instructions for card code</h1>
+{% endblock %}
+
+{% block content %}
+{% if vm['logged_in'] %}
+<p>This page gives instructions to add code to all the Investec Cards you want to monitor. The same code is used for all
+    your cards.</p>
+<h3>1. Environmental variables</h3>
+<p>Add the following code to the <span class='code-inline'>env.json</span> file. Note, you can still use
+    your own environmental variables as well.</p>
+<pre class="code-block">
+{
+    "your_variable": "another variable you might have",
+
+    "transactionApi": "{{vm['function_url']}}",
+    "user_id": "{{vm['username']}}"
+}</pre>
+
+<h3>2. Code</h3>
+<p>Add the following code to the <span class='code-inline'>main.js</span> file. Note, you can still use
+    your own code as well. By default this code only executes on simulation. You can remove that limitation if you want
+    to process production data.</p>
+<pre class="code-block">
+{
+    async function pushTransaction(transaction) {
+        try {
+            const response = await fetch(process.env.transactionApi, {
+                method: 'POST',
+                headers: {  'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    "transaction": transaction,
+                    "user_id": process.env.user_id
+                })
+            });
+            responseLog = {
+                status: response.status,
+                statusText: response.statusText,
+                serverMessage: (await response.text())
+            }
+            console.log(JSON.stringify(responseLog))
+        }
+        catch (e) {
+            console.log(e)
+        }
+    };
+    
+    // This function runs during the card transaction authorization flow.
+    // It has a limited execution time, so keep any code short-running.
+    const beforeTransaction = async (authorization) => {
+        return true;
+    };
+    
+    // This function runs after a transaction.
+    const afterTransaction = async (transaction) => {
+        if (transaction.reference === 'simulation') {
+            // this is a simulated transaction
+            await pushTransaction(transaction)
+        }
+        else {
+            // this is a production transaction
+        }
+    };
+}</pre>
+<div>
+    <label>
+        <a href="{{url_for('.home')}}">Home</a>
+        &nbsp;|&nbsp;
+        <a href="{{url_for('.sheet')}}">Sheet</a>
+        &nbsp;|&nbsp;
+        <a href="{{url_for('.appscript')}}">AppScript</a>
+    </label>
+</div>
+{% else %}
+<p>Please log in to access this page.</p>
+{% endif %}
+{% endblock %}
