@@ -148,7 +148,7 @@ class GoogleSheets():
         return False
 
     def get_last_subscription_row(self, range_name):
-        return int(self.service.spreadsheets().values().get(spreadsheetId=self.spreadsheet_id, range=range_name+"!L1").execute()["values"][0][0])
+        return int(self.service.spreadsheets().values().get(spreadsheetId=self.spreadsheet_id, range=range_name+"!M1").execute()["values"][0][0])
 
 
     def get_subscriptions(self, range_name):
