@@ -67,4 +67,4 @@ Don't want to sign up for one more user account? Would you rather do things the 
 # Future improvements
 There are various ways this project can be improved upon, including:
 - Improve the merchant information classification
-- Add a **scalable** mobile app
+- App Sheet is an easy way to create a proof of concept application. It however only provides options to promote scalability with paid subscriptions. Alternatively, a bespoke **scalable** mobile app can be developed.
