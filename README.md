@@ -1,4 +1,5 @@
-# [Snitch](https://hackathon-202106.ue.r.appspot.com/) :speech_balloon:
+# [Snitch](https://hackathon-202106.ue.r.appspot.com/) :speech_balloon: 
+# (Investec Programmable Banking Hackathon: June 2021)
 
 > "It’s a Remembrall! Gran knows I forget things — this tells you if there’s something you’ve forgotten to do. Look, you hold it tight like this and if it turns red — oh ... you’ve forgotten something ..."
 — Neville explaining his Remembrall
@@ -7,6 +8,9 @@
 Ever wish you had access to [Neville Longbottom's Remembral](https://harrypotter.fandom.com/wiki/Remembrall) when you got a new credit card and had to update all your subscription information on Netflix, Uber, Takealot, etc. Although Snitch is not a magical little ball, it will help you remember when the time comes to update your credit card information.
 
 Snitch works by remembering where you used your credit card, and then deciding if that merchant is a subscription or not. You can tell Snitch when your credit card expires, and Snitch will remind you about all the pesky little updates you need to do before your card has expired. 
+
+
+![](docs/app_overview.gif)
 
 
 ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) TODO: add demo video
@@ -23,6 +27,7 @@ Create a user [here](https://hackathon-202106.ue.r.appspot.com/) and follow the 
 2. [Technical Details](#technical-details) 
     1. [Technology used](#technology-used)
     2. [Design](#design)
+3. [Getting started](#getting-started)
 3. [Setup your own Snitch](#setup-your-own-snitch)
 4. [Future improvements](#future-improvements)
 
@@ -37,6 +42,24 @@ The most important feature of the project: you remain in control of your data. W
 The project allows you to avoid paying penalties for transactions charged to your expired credit cards. This project can also potentially save you money. The list can be used to analyse what type of services you pay for regularly, allowing you to decide if you need to cancel any service if necessary. 
 
 Cancelling a credit card? The list shows you where your soon to be credit card is used, allowing you to cancel these services and subcriptions, or updating the credit card info with a new one.
+
+
+# Getting started
+Sign up to use the project [here](https://hackathon-202106.ue.r.appspot.com/). Follow the steps on the website to set up your Investec Programmable Banking credit cards and your Google Sheet.
+
+![](docs/user_signup.gif)
+
+Set up an Apps Scripts trigger to notify you when a credit card is near exipry.
+
+![](docs/appsscript_trigger.gif)
+
+Once everythinis set up, the credit card info is stored in the `Credit Card` sheet as shown below.
+
+![](docs/new_card_with_expiry_date_sheets.gif)
+
+The subscription and transaction information is stored in the `Subscriptions` and `Not subscriptions` sheets as shown below.
+
+![](docs/new_subscription_sheets.gif)
 
 
 # Technical details
@@ -67,4 +90,5 @@ Don't want to sign up for one more user account? Would you rather do things the 
 # Future improvements
 There are various ways this project can be improved upon, including:
 - Improve the merchant information classification
+- Improve the spreadsheet layout
 - App Sheet is an easy way to create a proof of concept application. It however only provides options to promote scalability with paid subscriptions. Alternatively, a bespoke **scalable** mobile app can be developed.

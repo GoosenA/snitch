@@ -3,7 +3,7 @@
 2. [Create a Firestore database](#create-a-firestore-database) 
 3. [Create Cloud Functions](#create-cloud-functions)
 4. [Upload code to Investec Programmable Banking card](#upload-code-to-investec-programmable-banking-card)
-5. [Add Apps Script to Google spreadsheet](#add-apps-script-to-google-spreadsheet)
+5. [Add Apps Scripts to Google spreadsheet](#add-apps-scripts-to-google-spreadsheet)
 6. [Create App Sheet app](#create-app-sheet-app)
 
 
@@ -327,5 +327,7 @@ App Sheet only provides options to create a sample app with paid subscriptions. 
 You can create an App Sheet app for this project with the Google Sheet as a data source. Looking at the bright side... you are open to tap into your own creativity while customising the app.
 
 To take a peak at how we put the app together, see our detailed App Sheet configuration [here]("Application%20Documentation.pdf").
+
+![](app_overview.gif)
 
 [:arrow_left: Go back to Setup list](../README.md#setup)
