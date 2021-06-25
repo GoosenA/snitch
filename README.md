@@ -28,8 +28,8 @@ Create a user [here](https://hackathon-202106.ue.r.appspot.com/) and follow the 
     1. [Technology used](#technology-used)
     2. [Design](#design)
 3. [Getting started](#getting-started)
-3. [Setup your own Snitch](#setup-your-own-snitch)
-4. [Future improvements](#future-improvements)
+4. [Setup your own Snitch](#setup-your-own-snitch)
+5. [Future improvements](#future-improvements)
 
 
 # Overview
