@@ -11,22 +11,19 @@ Ever wish you had access to [Neville Longbottom's Remembral](https://harrypotter
 
 Snitch works by remembering where you used your credit card, and then deciding if that merchant is a subscription or not. You can tell Snitch when your credit card expires, and Snitch will remind you about all the pesky little updates you need to do before your card has expired. 
 
-
 ![](docs/app_overview.gif)
 
-
-## Getting started
-Create a user [here](https://hackathon-202106.ue.r.appspot.com/) and follow the steps to get started using this project. 
-
+## Quick start
+Create a user on the [Snitch web app](https://hackathon-202106.ue.r.appspot.com/) and follow the steps to get started using this project.
 
 # Index
 1. [Overview](#overview)
-2. [Technical Details](#technical-details) 
+1. [Technical Details](#technical-details)
     1. [Technology used](#technology-used)
-    2. [Design](#design)
-3. [Getting started](#getting-started)
-4. [Setup your own Snitch](#setup-your-own-snitch)
-5. [Future improvements](#future-improvements)
+    1. [Design](#design)
+1. [Getting started](#getting-started)
+1. [Setup your own Snitch](#setup-your-own-snitch)
+1. [Future improvements](#future-improvements)
 
 
 # Overview
@@ -38,19 +35,19 @@ The most important feature of the project: you remain in control of your data. W
 
 The project allows you to avoid paying penalties for transactions charged to your expired credit cards. This project can also potentially save you money. The list can be used to analyse what type of services you pay for regularly, allowing you to decide if you need to cancel any service if necessary. 
 
-Cancelling a credit card? The list shows you where your soon to be credit card is used, allowing you to cancel these services and subcriptions, or updating the credit card info with a new one.
+Cancelling a credit card? The list shows you where your soon to be cancelled credit card is used, allowing you to cancel these services and subcriptions, or updating the credit card info with a new one.
 
 
 # Getting started
-Sign up to use the project [here](https://hackathon-202106.ue.r.appspot.com/). Follow the steps on the website to set up your Investec Programmable Banking credit cards and your Google Sheet.
+Sign up to use the project on the [Snitch web app](https://hackathon-202106.ue.r.appspot.com/). Follow the steps on the website to set up your Investec Programmable Banking credit cards and your Google Sheet.
 
 ![](docs/user_signup.gif)
 
-Set up an Apps Scripts trigger to notify you when a credit card is near exipry.
+Set up an Apps Scripts trigger to notify you when a credit card is near exipiry.
 
 ![](docs/appsscript_trigger.gif)
 
-Once everythinis set up, the credit card info is stored in the `Credit Card` sheet as shown below.
+Once everything is set up, the credit card info is stored in the `Credit Card` sheet as shown below.
 
 ![](docs/new_card_with_expiry_date_sheets.gif)
 
@@ -62,10 +59,10 @@ The subscription and transaction information is stored in the `Subscriptions` an
 # Technical details
 ## Technology used
 The project is built using:
-- GCP Cloud Functions, Firestore, Pub/Sub
+- Google Cloud Functions, Firestore, Pub/Sub
 - Python
-- [Apps Script](https://developers.google.com/apps-script)
-- [AppSheet](https://www.appsheet.com/)
+- [Google Apps Script](https://developers.google.com/apps-script)
+- [Google AppSheet](https://www.appsheet.com/)
 - Flask
 
 ## Design
@@ -75,9 +72,9 @@ The application stores user account details in a GCP firestore collection. The F
 
 Every time a card transaction is made, the transaction information is sent to the `process_transaction` cloud function. The merchant information and card information is seperated and processed. The merchant information is published to the `merchant` Pub/Sub topic. The card information is published to the `card` Pub/Sub topic.
 
-The `process_merchant` cloud function is triggered by the message published to the `merchant` topic. The cloud function determines if the merchant is in either the **Subscriptions**/**Not subscriptions** sheets or not. If the merchant information is not in either sheet, it is added to the relevant sheet based on the categorisation thereof. If the merchant information is already stored in one of the sheets, the merchant information is updated where necessary.
+The `process_merchant` cloud function is triggered by the message published to the `merchant` topic. The cloud function determines if the merchant is in the **Subscriptions** sheet, the **Not subscriptions** sheet or neither. If the merchant information is not in either sheet, it is added to the relevant sheet based on the categorisation thereof. If the merchant information is already stored in one of the sheets, the merchant information is updated where necessary.
 
-The `process_card` cloud function is triggered by the message published to the `card` topip. The cloud function determines if the card information is stored in the **Credit card** sheet. If the credit card information is not in the sheet, it is added.
+The `process_card` cloud function is triggered by the message published to the `card` topic. The cloud function determines if the card information is stored in the **Credit card** sheet. If the credit card information is not in the sheet, it is added.
 
 
 # Setup your own Snitch
