@@ -1,6 +1,8 @@
 # [Snitch](https://hackathon-202106.ue.r.appspot.com/) :speech_balloon: 
 # (Investec Programmable Banking Hackathon: June 2021)
 
+[Youtube video link](https://www.youtube.com/watch?v=OUf_G66UDpc)
+
 > "It’s a Remembrall! Gran knows I forget things — this tells you if there’s something you’ve forgotten to do. Look, you hold it tight like this and if it turns red — oh ... you’ve forgotten something ..."
 — Neville explaining his Remembrall
 
@@ -9,18 +11,10 @@ Ever wish you had access to [Neville Longbottom's Remembral](https://harrypotter
 
 Snitch works by remembering where you used your credit card, and then deciding if that merchant is a subscription or not. You can tell Snitch when your credit card expires, and Snitch will remind you about all the pesky little updates you need to do before your card has expired. 
 
-
 ![](docs/app_overview.gif)
-
-
-![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) TODO: add demo video
-
-[![Demo video](hdocs/demo.png)]("Hackathon demo video")
-
 
 ## Quick start
 Create a user on the [Snitch web app](https://hackathon-202106.ue.r.appspot.com/) and follow the steps to get started using this project.
-
 
 # Index
 1. [Overview](#overview)
