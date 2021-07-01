@@ -8,7 +8,7 @@
 
 
 ## Create a Google Cloud Project
-Follow  [these steps](https://cloud.google.com/resource-manager/docs/creating-managing-projects#gcloud) to create a GCP project. You need to configure your local terminal to deploy cloud functions in later steps. To do so, you need to set the project-id:
+Follow  [these steps](https://cloud.google.com/resource-manager/docs/creating-managing-projects#gcloud) to create a GCP project. You need to configure your local terminal to deploy cloud functions in later steps. To do so, you need to set up  `gcloud` ([Google cloud SDK](https://cloud.google.com/sdk/docs/install)). After initial setup confirm the correct project is selected.
 1. Check your project:
   ```
   gcloud config get-value project
@@ -20,8 +20,8 @@ Follow  [these steps](https://cloud.google.com/resource-manager/docs/creating-ma
 
 ## Create a Firestore database
 ### Firestore is used to store user info. The user info stored includes:
-- user id
-- spreadsheet id
+- User ID
+- Spreadsheet ID
 
 ### Important considerations
 - Choose the database **location** in the same area where the Cloud Functions instances will be created.
@@ -37,11 +37,12 @@ This functions processes transaction and user information.
 - Validates provided user data (aka checks if the user is registered)
 - Extracts the merchant information
 - Determines if the transaction is a subscription or not based on the merchant information
-- Sends the processed merchant information to the [process_merchant]() cloud function
-- Extracts card information and sends it to the [process_card]() cloud function.
+- Sends the processed merchant information to the [process_merchant](#b.-process-merchants) cloud function
+- Extracts card information and sends it to the [process_card](#c.-process-cards) cloud function.
 
-#### Deploy the function using `gcloud` ([Google cloud SDK](https://cloud.google.com/sdk/docs/install))
+#### Deploy the function using `gcloud`
   ```
+  cd [repo]/src/cloud-functions/cf1_process_incoming_transactions
   gcloud functions deploy process-transaction --entry-point=process_transaction --runtime=python38 --trigger-http --region=[REGION] --memory=128MB --timeout=60s --env-vars-file .env.yaml
   ```
 
@@ -55,24 +56,39 @@ This functions processes merchant and user information.
 
 #### Deploy the function using `gcloud` 
   ```
+  cd [repo]/src/cloud-functions/cf2_process_merchant
   gcloud functions deploy process-merchant --entry-point=process_merchant --runtime=python38 --trigger-topic merchant --region=[REGION] --memory=256MB --timeout=60s --env-vars-file .env.yaml
   ```
 
 ### c. Process cards
 #### What this function does
-This functions processes card and user information. 
+This functions processes card and user information.
 - It checks if the card info provided already exists in the spreadsheet owned by the user
 - Adds the card info to the spreadsheet if the card does not exists
 - Updates the card info in the spreadsheet if the card already exists
 
-#### Deploy the function using `gcloud` 
+#### Deploy the function using `gcloud`
   ```
-  gcloud functions deploy process-card --entry-point=process_card --runtime=python38 --trigger-topic card --region=us-east1 --memory=256MB --timeout=60s --env-vars-file .env.yaml
+  cd [repo]/src/cloud-functions/cf3_process_card
+  gcloud functions deploy process-card --entry-point=process_card --runtime=python38 --trigger-topic card --region=[REGION] --memory=256MB --timeout=60s --env-vars-file .env.yaml
   ```
 
-### d. Create and format a Google spreadsheet
+### d. Format sheet
+#### What this function does
+This function formats a blank Google Sheet to be used by the other functions. It adds the following sheets as well as headers:
+- Credit cards
+- Subscriptions
+- Not subscriptions
+
+
+#### Deploy the function using `gcloud`
+  ```
+  cd [repo]/src/cloud-functions/cf4_format_sheet
+  gcloud functions deploy format-sheet --entry-point=format_sheet --runtime=python38 --trigger-http --region=[REGION] --memory=256MB --timeout=60s --ingress-settings=all --security-level=secure-always --max-instances=10 --env-vars-file .env.yaml
+  ```
+### e. Create and format a Google spreadsheet
 #### In GCP, create a GCP service account to access the Google sheets:
-Create a new service account and create a service account key. The service account key will be downloaded to a .json file. Create a new secret in the secrets manager calles `SHEETS`. Add the service account key file to the `SHEETS` secret.
+Create a new service account and create a service account key. The service account key will be downloaded to a .json file. Create a new secret in the secrets manager called `SHEETS`. Add the service account key file to the `SHEETS` secret.
 
 
 #### In Google Spreadsheets:
@@ -83,16 +99,22 @@ https://docs.google.com/spreadsheets/d/[SPREADSHEET_ID]/edit#gid=0
 Add the service account to the spreadsheet with editor writes.
 
 #### In GCP Firestore:
-Add a dummy user to the **user** collection in Firestore.
+Add a dummy user to the **users** collection in Firestore.
 ![Add user to firestore](add_user_firestore.png)
-Make sure the document id matches the username field. 
+Make sure the document id matches the username field.
 Add the spreadsheet ID to the `sheet_id` field in the user document.
 
 #### In GCP Cloud Functions:
-Run the `format sheet` cloud function to initialise your spreadsheet.
+Call the `format_sheet` cloud function to initialise your spreadsheet.
+
+Request data:
+```
+{"sheet_id": "[SPREADSHEET_ID]"}
+```
+- Option 1: Go to the function on GCP, and use the TESTING tab with the request data above.
+- Option 2: Use a `curl` POST request to the function TRIGGER with the request data above. See image below.
+
 ![Run the format sheet cloud function](format_sheet.png)
-
-
 
 ## Upload code to Investec Programmable Banking card
 
